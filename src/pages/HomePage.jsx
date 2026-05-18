@@ -1,22 +1,38 @@
 import BookShelf from '../components/BookShelf'
 import AddBookModal from '../components/AddBookModal'
+import BookCoverModal from '../components/BookCoverModal'
+import BookCardModal from '../components/BookCardModal'
+import DeleteBookModal from '../components/DeleteBookModal'
 import {useState} from 'react'
 function HomePage(){
     const [isAddModalOpen,setIsAddModalOpen] = useState(false)
+    const [isDeleteModalOpen,setIsDeleteModalOpen] = useState(false)
+    const [shelfBooks,setShelfBooks]= useState([])
+    const [selectedBook,setSelectedBook]= useState(null)
+    const [viewState,setViewState]= useState(null)
+    function handleBooks(book){
+        setShelfBooks([...shelfBooks,book])
+    }
+    function handleSpineClick(book){
+        setSelectedBook(book)
+        setViewState("cover")
+    }
+    function handleDeleteBook(book){
+        setShelfBooks(shelfBooks.filter((b) => b.id !== book.id))
+    }
 
 
     return(
         <div className="relative flex flex-col h-screen bg-[#EDECED]">
         <img src="../public/plant.png" className="absolute bottom-9 -left-30 w-120 z-15 h-75"/>
-        <img src="../public/sofa.png" className="absolute bottom-35 left-[16%] w-140 z-10 h-80" />
         <img src="../public/plant.png" className="absolute bottom-9 -right-30 w-120 z-20 h-75" />
         <div className="flex flex-col h-screen">
             <div className="h-1/2 bg-[#EDECED]">
             <div className="relative">
-            <BookShelf/>
+            <BookShelf shelfBooks={shelfBooks} onSpineClick={handleSpineClick}/>
             <div className="absolute bottom-0 w-full translate-y-1/2 px-70 flex justify-between">
                 <button className="bg-white text-[#FF1FA9] rounded-full border-1 border-[#FF1FA9] w-60 h-15 "onClick={()=>setIsAddModalOpen(true)}>Add Book +</button>
-                <button className="bg-white text-[#FF1FA9] rounded-full border-1 border-[#FF1FA9] w-60 h-15 ">Delete Book -</button>
+                <button className="bg-white text-[#FF1FA9] rounded-full border-1 border-[#FF1FA9] disabled:opacity-70 w-60 h-15 "onClick={()=>setIsDeleteModalOpen(true)} disabled={shelfBooks.length === 0}>Delete Book -</button>
             </div>
             </div>
             </div>
@@ -31,7 +47,10 @@ function HomePage(){
             </div>
 
         </div>
-        {isAddModalOpen && <AddBookModal onClose={()=> setIsAddModalOpen(false)}/>}
+        {isAddModalOpen && <AddBookModal onClose={()=> setIsAddModalOpen(false)} onAddBook={handleBooks}/>}
+        {isDeleteModalOpen && <DeleteBookModal onClose={()=>setIsDeleteModalOpen(false)} onDeleteBook={handleDeleteBook} shelfBooks={shelfBooks}/>}
+        {viewState==="cover" && <BookCoverModal book={selectedBook} onFlip={()=> setViewState("card")} onClose={()=>{setViewState(null);setSelectedBook(null)}}/>}
+        {viewState==="card" && <BookCardModal book={selectedBook} onClose={()=> {setViewState(null);setSelectedBook(null)}}/>}
         </div>
     )
 }
