@@ -42,8 +42,8 @@ function HomePage(){
 
             </div>
             </div>
-            <div className="bottom-0 bg-[#F48AAE] h-10 w-full whitespace-nowrap">
-            <p className="animate-marquee text-white font-['Times_New_Roman',_serif] text-2xl text-center ">~Grab a coffee and your favorite book   -   Reading is dreaming with open eyes   -   Books make great gifts because they have whole worlds inside of them   -   Books are a uniquely portable magic~</p>
+            <div className="bottom-0 bg-[#F48AAE] h-15 w-full whitespace-nowrap">
+            <p className="animate-marquee text-white font-['Times_New_Roman',_serif] text-2xl text-center mt-3">~Grab a coffee and your favorite book   -   Reading is dreaming with open eyes   -   Books make great gifts because they have whole worlds inside of them   -   Books are a uniquely portable magic~</p>
             </div>
 
         </div>
